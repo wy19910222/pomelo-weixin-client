@@ -163,10 +163,7 @@ module.exports = class Pomelo extends EventEmitter {
             this.url = this.urlGenerator(host, port);
         }
 
-        if (browserWS) {
-            this.wsCreator = this.wsCreatorWeb;
-            this.browserWS = browserWS;
-        }
+        this.browserWS = browserWS;
     
         this.handshakeBuffer.user = user;
         this.handshakeCallback = handshakeCallback;
@@ -218,7 +215,8 @@ module.exports = class Pomelo extends EventEmitter {
         };
     
         // socket = wx.connectSocket({ url: reconnectUrl });
-        this.socket = this.wsCreator({
+        
+        this.socket = (this.browserWS ? this.wsCreatorWeb : this.wsCreator)({
             url: reconnectUrl,
             onError,
             onOpen,
